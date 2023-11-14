@@ -1,18 +1,27 @@
 #!/usr/bin/env python
 
+import yaml
 from flask import Flask, abort
 
-import quickpoll
+from quickpoll import Poll
+
 
 # Define the global flask application object.
 app = Flask(__name__)
-app.config['POLLS'] = quickpoll.get_polls()
 
+def load_polls():
+    """Loads up the polls from the configuration file."""
+    polls = []
 
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
+    with open(Poll.config_file(), 'r') as stream:
+        # Load the configuration from our YAML file.
+        config = yaml.safe_load(stream)
 
+        # Populate the polls.
+        for p in config['polls']:
+            polls.append(Poll.from_dict(p))
+
+    app.config['POLLS'] = polls
 
 @app.route('/polls')
 def list_polls():
@@ -37,4 +46,5 @@ def get_poll(name):
 
 
 if __name__ == '__main__':
+    load_polls()
     app.run()
