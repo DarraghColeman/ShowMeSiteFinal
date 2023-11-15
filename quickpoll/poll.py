@@ -22,14 +22,22 @@ class Poll(Renderable):
         d = {
             'name': self.name,
             'title': self.title,
+            'votes': 0,
             'options': []
         }
 
         # Populate the options.
         for opt in self.options:
             d['options'].append(opt.__dict__)
+            d['votes'] += opt.votes
 
         return d
+
+    def cast_vote(self, value):
+        """Casts a vote on an option by its value."""
+        for opt in self.options:
+            if opt.value == value:
+                opt.cast_vote()
 
     @staticmethod
     def from_dict(d):
@@ -56,13 +64,19 @@ class Option(Renderable):
     def __init__(self, label, value):
         self.label = label
         self.value = value
+        self.votes = 0
 
     @property
     def __dict__(self):
         return {
             'label': self.label,
-            'value': self.value
+            'value': self.value,
+            'votes': self.votes
         }
+
+    def cast_vote(self):
+        """Casts a vote on this option."""
+        self.votes += 1
 
     @staticmethod
     def from_dict(d):
