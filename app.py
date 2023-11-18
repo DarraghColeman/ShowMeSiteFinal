@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
 import yaml
-from flask import Flask, abort, request
+from flask import Flask, abort, request, render_template
 
 from quickpoll import Poll
 
 # Define the global flask application object.
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 poll_cache = None
 
 
@@ -35,6 +35,11 @@ def get_poll_from_name(name):
             return poll
 
     return None
+
+
+@app.route('/')
+def static_index():
+    return render_template('index.html', polls=poll_cache)
 
 
 @app.route('/polls')

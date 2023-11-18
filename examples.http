@@ -1,0 +1,12 @@
+GET localhost:5000/polls
+
+###
+
+GET localhost:5000/poll/best-pet
+
+###
+
+POST localhost:5000/vote/best-pet
+Content-Type: application/x-www-form-urlencoded
+
+option = snake
