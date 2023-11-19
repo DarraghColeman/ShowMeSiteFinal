@@ -8,12 +8,13 @@ from quickpoll.renderable import Renderable
 class Poll(Renderable):
     """Abstraction of a poll defined in the configuration."""
 
-    def __init__(self, name, title, options=None):
+    def __init__(self, name, title, desc='', options=None):
         if options is None:
             options = []
 
         self.name = name
         self.title = title
+        self.desc = desc
         self.options = options
 
     @property
@@ -22,6 +23,7 @@ class Poll(Renderable):
         d = {
             'name': self.name,
             'title': self.title,
+            'desc': self.desc,
             'votes': 0,
             'options': []
         }
@@ -44,7 +46,7 @@ class Poll(Renderable):
         """Builds up a Poll object from a dict (usually comes from the
         configuration)."""
         # Create the base poll object.
-        self = Poll(d['name'], d['title'])
+        self = Poll(d['name'], d['title'], d['desc'])
 
         # Populate the options.
         for opt in d['options']:
