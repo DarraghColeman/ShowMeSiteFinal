@@ -14,7 +14,9 @@
 
         <ul class="list-group list-group-flush">
             {% for opt in poll.options %}
-                <li class="list-group-item" onclick="alert('{{ opt.value }}')">{{ opt.label }}</li>
+                <li class="list-group-item" onclick="vote('{{ poll.name }}', '{{ opt.value }}', this)">
+                    {{ opt.label }}
+                </li>
             {% endfor %}
         </ul>
     </div>
