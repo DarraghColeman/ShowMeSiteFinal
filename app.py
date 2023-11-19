@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import yaml
+import os.path
 from flask import Flask, abort, request, render_template
 
 from quickpoll import Poll
@@ -14,8 +15,14 @@ def load_polls():
     """Loads up the polls from the configuration file."""
     global poll_cache
     polls = []
+    polls_fpath = Poll.config_file()
 
-    with open(Poll.config_file(), 'r') as stream:
+    # Check if the polls file actually exists.
+    if not os.path.exists(polls_fpath):
+        print(f'Polls configuration file ({polls_fpath}) doesn''t exist.')
+        exit(1)
+
+    with open(polls_fpath, 'r') as stream:
         # Load the configuration from our YAML file.
         config = yaml.safe_load(stream)
 
