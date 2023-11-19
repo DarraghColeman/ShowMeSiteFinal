@@ -1,12 +1,12 @@
-GET localhost:5000/polls
+GET localhost:5000/api/polls
 
 ###
 
-GET localhost:5000/poll/best-pet
+GET localhost:5000/api/poll/best-pet
 
 ###
 
-POST localhost:5000/vote/best-pet
+POST localhost:5000/api/vote/best-pet
 Content-Type: application/x-www-form-urlencoded
 
 option = snake
