@@ -1,0 +1,21 @@
+<div class="col">
+    <div id="poll-{{ poll.name }}" class="poll-card card">
+        <div class="card-header">
+            Poll
+            <a class="icon-link" href="/poll/{{ poll.name }}">
+                <i class="bi bi-link-45deg"></i>
+            </a>
+        </div>
+
+        <div class="card-body">
+            <h5 class="card-title">{{ poll.title }}</h5>
+            <p class="card-text">{{ poll.desc }}</p>
+        </div>
+
+        <ul class="list-group list-group-flush">
+            {% for opt in poll.options %}
+                <li class="list-group-item" onclick="alert('{{ opt.value }}')">{{ opt.label }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

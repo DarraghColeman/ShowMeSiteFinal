@@ -46,10 +46,22 @@ def get_poll_from_name(name):
 
 @app.route('/')
 def static_index():
+    """Renders the main page template."""
     return render_template('index.html', polls=poll_cache)
 
 
-@app.route('/polls')
+@app.route('/poll/<name>')
+def render_poll(name):
+    """Renders the single poll template."""
+    poll = get_poll_from_name(name)
+    if poll is not None:
+        return render_template('single_poll.html', poll=poll.__dict__)
+
+    # No matching poll was found.
+    abort(404)
+
+
+@app.route('/api/polls')
 def list_polls():
     """Gets the list of the available polls."""
     global poll_cache
@@ -61,7 +73,7 @@ def list_polls():
     return json
 
 
-@app.route('/poll/<name>')
+@app.route('/api/poll/<name>')
 def get_poll(name):
     """Gets a specific poll by its name."""
     poll = get_poll_from_name(name)
@@ -72,7 +84,7 @@ def get_poll(name):
     abort(404)
 
 
-@app.route('/vote/<name>', methods=['POST'])
+@app.route('/api/vote/<name>', methods=['POST'])
 def cast_vote(name):
     poll = get_poll_from_name(name)
     if poll is not None:

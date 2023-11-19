@@ -24,7 +24,7 @@
 		<div class="collapse navbar-collapse" id="navbar-nav-list">
 			<ul class="navbar-nav">
 				<li class="nav-item">
-					<a aria-current="page" class="nav-link active" href="/">Pools</a>
+					<a aria-current="page" class="nav-link" href="/">Pools</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="#">Results</a>
@@ -35,15 +35,8 @@
 </nav>
 
 <main class="container">
-	{% for poll in polls %}
-		{% if loop.index0 % 3 == 0 %}
-			{% if loop.index0 != 0 %}
-				</div>
-			{% endif %}
-			<div class="row row-cols-1 row-cols-xl-3">
-		{% endif %}
+	<div class="row row-cols-1 row-cols-xl-2 justify-content-center">
         {% include 'poll_card.html' %}
-	{% endfor %}
 	</div>
 </main>
 
