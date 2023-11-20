@@ -2,7 +2,7 @@
 
 import yaml
 import os.path
-from flask import Flask, abort, request, render_template
+from flask import Flask, abort, request, render_template, make_response
 
 from quickpoll import Poll
 
@@ -66,6 +66,20 @@ def render_results():
     """Renders the results page template."""
     return render_template('results.html', polls=poll_cache)
 
+
+@app.route('/export/csv')
+def export_csv():
+    """Exports the results as CSV."""
+    # Build up the CSV file.
+    csv = '"poll_name","poll_title","poll_option_value","poll_option_label","poll_option_votes",\r\n'
+    for poll in poll_cache:
+        for opt in poll.options:
+            csv += f'"{poll.name}","{poll.title}","{opt.value}","{opt.label}","{opt.votes}",\r\n'
+
+    # Build up the response.
+    response = make_response(csv)
+    response.headers['Content-Type'] = 'text/csv'
+    return response
 
 @app.route('/api/polls')
 def list_polls():
