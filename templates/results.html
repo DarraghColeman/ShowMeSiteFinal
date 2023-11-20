@@ -34,7 +34,31 @@
 
 <main class="container">
     <div id="top-toast-placeholder"></div>
-    <div id="chart-container"></div>
+
+	{% for poll in polls %}
+		{% if loop.index0 % 3 == 0 %}
+			{% if loop.index0 != 0 %}
+				</div>
+			{% endif %}
+			<div class="row row-cols-1 row-cols-xl-3">
+		{% endif %}
+        <div class="col">
+            <div id="poll-{{ poll.name }}" class="poll-card card">
+                <div class="card-header">
+                    Poll Result
+                    <a class="icon-link" href="/poll/{{ poll.name }}">
+                        <i class="bi bi-link-45deg"></i>
+                    </a>
+                </div>
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ poll.title }}</h5>
+                    <canvas id="chart-{{ poll.name }}"></canvas>
+                </div>
+            </div>
+        </div>
+	{% endfor %}
+	</div>
 </main>
 
 <!-- Javascript -->
@@ -43,7 +67,7 @@
 <script src="/js/main.js"></script>
 <script type="application/javascript">
     document.addEventListener("DOMContentLoaded", function () {
-        populate_results(document.getElementById("chart-container"));
+        populate_results();
     });
 </script>
 </body>

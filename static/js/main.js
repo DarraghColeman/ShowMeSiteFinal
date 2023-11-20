@@ -60,10 +60,8 @@ const vote = function (name, option, elem) {
 
 /**
  * Populates the results into the page.
- *
- * @param container {HTMLElement} Element that will contain the results.
  */
-const populate_results = function (container) {
+const populate_results = function () {
     // Prepare the request.
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `/api/polls`, true);
@@ -74,16 +72,16 @@ const populate_results = function (container) {
             if (xhr.status === 200) {
                 const polls = JSON.parse(xhr.responseText)["polls"];
                 polls.forEach(function (poll) {
-                    // Build up the chart wrapper.
-                    const wrapper = document.createElement("div");
-                    wrapper.innerHTML = `<canvas id="chart-${poll["name"]}"></canvas>`;
-                    container.append(wrapper);
-
                     // Set up the chart.
                     new Chart(document.getElementById(`chart-${poll["name"]}`), {
                         type: "bar",
                         options: {
-                            indexAxis: "y"
+                            indexAxis: "y",
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
                         },
                         data: {
                             labels: poll["options"].map(function (opt) {

@@ -64,7 +64,7 @@ def render_poll(name):
 @app.route('/results')
 def render_results():
     """Renders the results page template."""
-    return render_template('results.html')
+    return render_template('results.html', polls=poll_cache)
 
 
 @app.route('/api/polls')
