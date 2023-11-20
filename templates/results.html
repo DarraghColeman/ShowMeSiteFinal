@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta content="width=device-width, initial-scale=1" name="viewport">
 
-	<title>{{ poll.title }} - QuickPool</title>
+	<title>Results - QuickPool</title>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1/font/bootstrap-icons.css">
@@ -25,7 +25,7 @@
 					<a class="nav-link" href="/">Pools</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/results">Results</a>
+					<a aria-current="page" class="nav-link active" href="/results">Results</a>
 				</li>
 			</ul>
 		</div>
@@ -34,14 +34,17 @@
 
 <main class="container">
     <div id="top-toast-placeholder"></div>
-
-	<div class="row row-cols-1 row-cols-xl-2 justify-content-center">
-        {% include 'poll_card.html' %}
-	</div>
+    <div id="chart-container"></div>
 </main>
 
 <!-- Javascript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script src="/js/main.js"></script>
+<script type="application/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        populate_results(document.getElementById("chart-container"));
+    });
+</script>
 </body>
 </html>

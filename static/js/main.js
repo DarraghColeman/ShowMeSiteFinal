@@ -37,13 +37,9 @@ const show_toast = function (type, message) {
  * @param elem   {HTMLElement} Element that called this function.
  */
 const vote = function (name, option, elem) {
-    const req_url = `/api/vote/${name}`;
-
-    console.log(elem);
-
     // Prepare the request.
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", req_url, true);
+    xhr.open("POST", `/api/vote/${name}`, true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     // Set up the response callback.
@@ -61,3 +57,73 @@ const vote = function (name, option, elem) {
     // Perform the request.
     xhr.send(`option=${option}`);
 };
+
+/**
+ * Populates the results into the page.
+ *
+ * @param container {HTMLElement} Element that will contain the results.
+ */
+const populate_results = function (container) {
+    // Prepare the request.
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `/api/polls`, true);
+
+    // Set up the response callback.
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                const polls = JSON.parse(xhr.responseText)["polls"];
+                polls.forEach(function (poll) {
+                    // Build up the chart wrapper.
+                    const wrapper = document.createElement("div");
+                    wrapper.innerHTML = `<canvas id="chart-${poll["name"]}"></canvas>`;
+                    container.append(wrapper);
+
+                    // Set up the chart.
+                    new Chart(document.getElementById(`chart-${poll["name"]}`), {
+                        type: "bar",
+                        options: {
+                            indexAxis: "y"
+                        },
+                        data: {
+                            labels: poll["options"].map(function (opt) {
+                                return opt["label"];
+                            }),
+                            datasets: [
+                                {
+                                    label: poll["title"],
+                                    data: poll["options"].map(function (opt) {
+                                        return opt["votes"];
+                                    }),
+                                    fill: false,
+                                    backgroundColor: [
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 205, 86, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(255, 159, 64, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                        'rgba(201, 203, 207, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgb(54, 162, 235)',
+                                        'rgb(255, 205, 86)',
+                                        'rgb(75, 192, 192)',
+                                        'rgb(255, 159, 64)',
+                                        'rgb(153, 102, 255)',
+                                        'rgb(201, 203, 207)'
+                                    ],
+                                    borderWidth: 1
+                                }
+                            ]
+                        }
+                    });
+                });
+            } else {
+                show_toast("danger", "An error occurred while trying to fetch results");
+            }
+        }
+    };
+
+    // Perform the request.
+    xhr.send();
+}

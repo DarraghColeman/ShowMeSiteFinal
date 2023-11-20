@@ -45,7 +45,7 @@ def get_poll_from_name(name):
 
 
 @app.route('/')
-def static_index():
+def render_index():
     """Renders the main page template."""
     return render_template('index.html', polls=poll_cache)
 
@@ -59,6 +59,12 @@ def render_poll(name):
 
     # No matching poll was found.
     abort(404)
+
+
+@app.route('/results')
+def render_results():
+    """Renders the results page template."""
+    return render_template('results.html')
 
 
 @app.route('/api/polls')
