@@ -8,14 +8,14 @@
         </div>
 
         <div class="card-body">
-            <h5 class="card-title">{{ poll.title }}</h5>
-            <p class="card-text">{{ poll.desc }}</p>
+            <h5 class="card-title">{{ poll.title|safe }}</h5>
+            <p class="card-text">{{ poll.desc|safe }}</p>
         </div>
 
         <ul class="list-group list-group-flush">
             {% for opt in poll.options %}
                 <li class="list-group-item" onclick="vote('{{ poll.name }}', '{{ opt.value }}', this)">
-                    {{ opt.label }}
+                    {{ opt.label|safe }}
                 </li>
             {% endfor %}
         </ul>
